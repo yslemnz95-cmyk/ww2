@@ -1,0 +1,9 @@
+{
+  "name": "yslem-sandbox",
+  "version": "1.0.0",
+  "description": "Bac a sable de trace (Luau patche, faux Roblox) - Node.js",
+  "main": "deob.js",
+  "scripts": { "start": "node deob.js" },
+  "license": "MIT",
+  "type": "commonjs"
+}

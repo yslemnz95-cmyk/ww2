@@ -1,0 +1,34 @@
+{
+  "name": "leakd_luaobfuscator",
+  "label": "LuaObfuscator.com (Chaotic Good / Chaotic Evil, LeakD)",
+  "detect": [
+    {
+      "regex": "Welcome to LuaObfuscator\\.com\\s+\\(Alpha [\\d.]+\\)",
+      "confidence": 0.97
+    },
+    {
+      "regex": "Much Love,\\s?Ferib",
+      "confidence": 0.95
+    },
+    {
+      "regex": "local v\\d+=math\\.ldexp;local v\\d+=getfenv or function\\(\\) return _ENV;end",
+      "confidence": 0.85
+    },
+    {
+      "regex": "local v0=tonumber;local v1=string\\.byte;local v2=string\\.char;local v3=string\\.sub;local v4=string\\.gsub",
+      "confidence": 0.8
+    },
+    {
+      "regex": "(?s)\\A\\s*local v0=string\\.char;local v1=string\\.byte;local v2=string\\.sub;local v3=bit32 or bit\\s*;",
+      "confidence": 0.9
+    }
+  ],
+  "cmd": "python3 run.py {in} {out}",
+  "timeout": 120,
+  "safe_for_untrusted": true,
+  "notes": "Static JS (fs/path only; no vm/eval/Function/child_process/network). index.js writes to <tool>/output/ unless --out is given; the wrapper always passes --out into a temp dir. PATCHED: Utils/io.js valFam accepts 'evil' when LOL! bytecode + math.ldexp are both present (Alpha 0.10.9 does bit ops arithmetically, so the old 'bxor' requirement rejected every real sample). On the real 0.10.9 sample (97 KB) the pipeline now completes (CFF removed, 11893/11893 bytecode bytes, 40 VM strings) but the opcode map resolves 0 ops, so the result is a partial structural lift (wrapper flags partial=1). Chaotic Good path untested (no sample available). Output header contains Cyrillic look-alike letters (harmless watermark).",
+  "requires": [
+    "node",
+    "python3"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "moonsec_v3",
+  "label": "MoonSec V3 (devirtualisation + decompilation)",
+  "detect": [
+    {
+      "regex": "(?s)\\A\\s*\\(\\[\\[This file was protected with MoonSec V3\\]\\]\\)",
+      "confidence": 0.99
+    },
+    {
+      "regex": "(?s)\\A.{0,6000}?\\(\\[\\[This file was protected with MoonSec V3[^\\]\\n]{0,80}\\]\\]\\)\\s*:gsub\\(",
+      "confidence": 0.97
+    }
+  ],
+  "cmd": [
+    "python3",
+    "run.py",
+    "{in}",
+    "{out}"
+  ],
+  "timeout": 180,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "dotnet-9-runtime (fourni par bootstrap.ensure_dotnet)"
+  ],
+  "notes": "Devirtualise MoonSec V3 avec MoonsecDeobfuscator (C#, livre dans bin/, runtime .NET 9 telecharge et verifie par bootstrap) puis decompile le bytecode Lua 5.1 avec decom.lua (LuaDec, Lua pur, execute dans un Lua isole). Teste sur 60 echantillons MoonSec V3 : 60/60 devirtualises + decompiles en < 3 s, ~115 Mo de memoire (tas .NET plafonne) ; 49/60 gardent des `upval_N` (decompilation approximative -> classe PARTIEL), 11/60 sans defaut visible. V2 non gere (moonsec_trace). Si la decompilation echoue, la sortie est le desassemblage (en-tete `-- MoonSec V3 [desassemblage]`). Place AVANT `moonsec_trace` (0,97) qui sert de secours (trace du bac a sable) si .NET est indisponible. Seul code evalue depuis l'entree : NLua Lua(openLibs:false) pour des expressions de cles numeriques ; decom.lua tourne sans io/os (shim). Delais durs partout."
+}

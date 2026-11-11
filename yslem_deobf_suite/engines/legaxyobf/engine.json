@@ -1,0 +1,14 @@
+{
+  "name": "legaxyobf",
+  "label": "legaxyobf (enveloppe RBXE ChaCha20-Poly1305 + machine virtuelle RBXO)",
+  "detect": [
+    {"regex": "\\A\\s*--\\s*protected by legaxyobf", "confidence": 0.97},
+    {"regex": "(?s)\\A[^\\n]{0,80}\\nlocal _z\\d+_\\w+ = \"RBXE\\\\001\\\\000\\\\001", "confidence": 0.95},
+    {"regex": "\"RBXE\\\\001\\\\000\\\\001\\\\002\\\\000", "confidence": 0.8}
+  ],
+  "cmd": ["python3", "run.py", "{in}", "{out}"],
+  "timeout": 60,
+  "safe_for_untrusted": true,
+  "requires": ["python3"],
+  "notes": "Pur Python (stdlib), n'execute JAMAIS le script : l'enveloppe RBXE est dechiffree avec la cle qui se trouve dans le fichier (ChaCha20-Poly1305, etiquette verifiee), le conteneur RBXO (VM a 29 opcodes, constantes chiffrees par un flot LCG dependant d'une somme de controle du bytecode) est lu, desassemble puis releve en Lua par evaluation symbolique ; les predicats opaques connus (a+b == 2(a&b)+(a^b), carre mod 4) sont retires. Mesure : 1 s. Les ops 0-28 sont ceux du fichier de reference (e4edbc48-fetched_3.lua) : un nouvel opcode est signale en commentaire `-- op inconnu`."
+}

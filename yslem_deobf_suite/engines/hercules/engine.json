@@ -1,0 +1,26 @@
+{
+  "name": "hercules",
+  "label": "Hercules obfuscator (v1.6.x - v2.0.x)",
+  "detect": [
+    {
+      "regex": "Obfuscated by Hercules v\\d",
+      "confidence": 0.97
+    },
+    {
+      "regex": "hercules-obfuscator\\.xyz",
+      "confidence": 0.9
+    },
+    {
+      "regex": "\\bBcToState\\s*\\(",
+      "confidence": 0.85
+    },
+    {
+      "regex": "(?m)^-- Lua 5\\.3\\+ / Luau compatibility polyfills",
+      "confidence": 0.4
+    }
+  ],
+  "cmd": "python3 run.py {in} {out}",
+  "timeout": 120,
+  "safe_for_untrusted": true,
+  "notes": "Pure-Python static decompiler (stdlib only, no eval/exec/subprocess/network); never runs the payload. Handles VM, BytecodeEncoder and --maximum (nested) presets. Source-only presets (LIGHT/VRSECF: no VM payload) are refused with 'no VM or BytecodeEncoder payload found' (exit 1, expected). Watermark sits ~465 bytes in, after a polyfill header, so scan the first 4 KB, not line 1; a stripped watermark leaves only the weak (0.4) polyfill signal."
+}

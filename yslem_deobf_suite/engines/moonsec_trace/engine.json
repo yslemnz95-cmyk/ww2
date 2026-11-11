@@ -1,0 +1,29 @@
+{
+  "name": "moonsec_trace",
+  "label": "MoonSec V2 / V3 (TRACE du bac a sable, pas le source d'origine)",
+  "detect": [
+    {
+      "regex": "(?s)\\A.{0,400}Protected_by_MoonSecV2",
+      "confidence": 0.97
+    },
+    {
+      "regex": "(?s)\\A\\s*\\(\\[\\[This file was protected with MoonSec V3\\]\\]\\)",
+      "confidence": 0.97
+    }
+  ],
+  "cmd": [
+    "python3",
+    "../sandbox/trace_run.py",
+    "{in}",
+    "{out}",
+    "MoonSec V2/V3"
+  ],
+  "timeout": 180,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "node (fourni par bootstrap.py)",
+    "luau patche (engines/sandbox/bin)"
+  ],
+  "notes": "Ne devirtualise pas : le script est EXECUTE dans le bac a sable (faux Roblox, aucun reseau reel) et le moteur livre la trace de ce qu'il fait sur UN chemin d'execution. Banc d'essai (2 depots GitHub d'echantillons, ~30 fichiers MoonSec V2/V3) : la grande majorite va au bout (statut finished, de 10 a 3 702 lignes) ; quelques-uns plantent dans le bac a sable (`connect is not a valid member of RBXScriptSignal`, `attempt to call a nil value`), signale en tete. Remplace, comme premier choix, le moteur `moonsec_v3` (desassemblage Lua 5.1, exige .NET 9)."
+}

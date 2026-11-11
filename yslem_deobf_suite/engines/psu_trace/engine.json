@@ -1,0 +1,25 @@
+{
+  "name": "psu_trace",
+  "label": "PSU Obfuscator (TRACE du bac a sable, pas le source d'origine)",
+  "detect": [
+    {
+      "regex": "(?s)\\A.{0,3000}This file was obfuscated using PSU Obfuscator",
+      "confidence": 0.97
+    }
+  ],
+  "cmd": [
+    "python3",
+    "../sandbox/trace_run.py",
+    "{in}",
+    "{out}",
+    "PSU Obfuscator"
+  ],
+  "timeout": 180,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "node (fourni par bootstrap.py)",
+    "luau patche (engines/sandbox/bin)"
+  ],
+  "notes": "Ne devirtualise pas : le script est EXECUTE dans le bac a sable et le moteur livre la trace de ce qu'il fait sur UN chemin d'execution. Signature : « This file was obfuscated using PSU Obfuscator 4.x » (aussi presente dans les echantillons etiquetes « AztupBrew » du depot vyxonq-dev). Banc d'essai : 9 echantillons PSU sur 10 vont au bout (statut finished) ; un plante sur `Expected ':' not '.' calling member function ActivateKey` (bibliotheque d'interface simulee)."
+}

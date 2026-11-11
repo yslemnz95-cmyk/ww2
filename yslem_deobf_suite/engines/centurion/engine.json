@@ -1,0 +1,14 @@
+{
+  "name": "centurion_v6",
+  "label": "Centurion v6 / v6.1",
+  "detect": [
+    {"regex": "Centurion v6(?:\\.\\d+)?", "confidence": 0.95},
+    {"regex": "c3\\[\\d+\\]\\s*=\\s*function\\(Z\\)", "confidence": 0.7},
+    {"regex": "=function\\(Z\\)const\\s", "confidence": 0.5}
+  ],
+  "cmd": ["python3", "run.py", "{in}", "{out}"],
+  "timeout": 120,
+  "safe_for_untrusted": true,
+  "requires": ["python3", "luau + luau-ast + luau-compile (stock 0.734 works for v6-static)"],
+  "notes": "Tested on the repo's own samples with stock Luau 0.734. v6-static route (c3 factories, e.g. somerandomobfidk.txt): PARTIAL readable payload (98 factories, FindFirstChildOfClass/GetAttribute logic visible, a few stray '\\\\x' escapes). It never executes the input (static AST + regex) -> safe. v6.1 sandbox route (Centurion6.1v*.txt, centuration7th.lua): all 4 samples verdict NEEDS ('invalid argument #1 to create (size)' / index nil) - needs the author's patched Luau (vector metatable writable, build_luau.py) and live Roblox ('use live-harness'); exit 5. Fix applied to src/centurion.py harvest_table_spans_ast: stock luau-ast emits AstExprIndexExpr + AstExprLocal (author's build: AstExprIndex + AstExprGlobal). README env vars are wrong: real names are CENT_LUAU_LUAU / CENT_LUAU_LUAU_AST / CENT_LUAU_LUAU_COMPILE. Legacy Windows paths (C:\\\\Users\\\\goldl\\\\...) in source are dead fallbacks."
+}

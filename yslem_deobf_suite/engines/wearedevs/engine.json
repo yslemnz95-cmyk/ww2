@@ -1,0 +1,28 @@
+{
+  "name": "wearedevs",
+  "label": "WeAreDevs obfuscator / Prometheus : Lua reconstruit (machine a etats relevee), repli sur la TRACE du bac a sable",
+  "detect": [
+    {
+      "regex": "\\A\\s*--\\[\\[\\s*v\\d+(?:\\.\\d+)*\\s+https?://wearedevs\\.net/obfuscator\\s*\\]\\]",
+      "confidence": 0.97
+    },
+    {
+      "regex": "(?s)\\A\\s*(?:\\s*do\\b.{0,200}?\\bend\\s*)?return\\(function\\(\\.\\.\\.\\)local \\w+=\\{\\\"(?:\\\\\\d{3}){6}",
+      "confidence": 0.88
+    }
+  ],
+  "cmd": [
+    "python3",
+    "run.py",
+    "{in}",
+    "{out}"
+  ],
+  "timeout": 420,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "node (fourni par bootstrap.py)",
+    "luau patche (engines/sandbox/bin)"
+  ],
+  "notes": "Reconstruit un Lua EQUIVALENT (pas le fichier d'origine : noms de variables perdus) : releve de la machine a etats aplatie, graphe de flot, structuration en if/while, chaines chiffrees dechiffrees par execution dans le bac a sable. Verifie le resultat (compilation + trace du bac a sable identique a celle de l'original) ; si le releve echoue ou fait pire que l'original, livre la TRACE du bac a sable etiquetee. Modele WeAreDevs v1.x avec ou sans en-tete."
+}

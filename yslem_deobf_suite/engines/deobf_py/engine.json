@@ -1,0 +1,27 @@
+{
+  "name": "deobf_py",
+  "label": "IronBrew1 (Python deobf)",
+  "detect": [
+    {
+      "regex": "(?i)\\A\\s*--\\s*this file was generated using ironbrew1\\b",
+      "confidence": 0.97
+    },
+    {
+      "regex": "\\A\\s*return\\s*\\(\\s*function\\s*\\((?:[a-z]{1,2},){20,}\\.\\.\\.\\)\\s*local [a-z]{1,3}(?:=\\{-?\\d+,|(?:,[a-z]{1,3}){10,})",
+      "confidence": 0.8
+    }
+  ],
+  "cmd": [
+    "python3",
+    "run.py",
+    "{in}",
+    "{out}"
+  ],
+  "timeout": 900,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "luau (+ luau-ast): le Luau patche est copie dans deobf/bin/ par bootstrap.py (ou LURAPH_LUAU / LURAPH_LUAU_AST)"
+  ],
+  "notes": "Entry point: deobf/deob.py (IronBrew1 + generic behaviour-trace fallback). Luraph support was removed on 2026-11-09. The target only runs inside the Luau VM sandbox (envlog.luau)."
+}

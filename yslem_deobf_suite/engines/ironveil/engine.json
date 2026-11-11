@@ -1,0 +1,26 @@
+{
+  "name": "ironveil",
+  "label": "Ironveil v1",
+  "detect": [
+    {
+      "regex": "Obfuscated using ironveil v\\d",
+      "confidence": 0.97
+    },
+    {
+      "regex": "\\bs\\[1\\]=table\\.concat\\s+s\\[2\\]=table\\.insert\\s+s\\[3\\]=table\\.unpack or unpack",
+      "confidence": 0.85
+    },
+    {
+      "regex": "(?:\\[\\(\\\"\\w{1,3}\\\"\\.\\.\\\"\\\"\\)\\]=[^\\[]{0,200}?){3}",
+      "confidence": 0.8
+    }
+  ],
+  "cmd": "python3 run.py {in} {out}",
+  "timeout": 120,
+  "safe_for_untrusted": true,
+  "notes": "Static JS (fs/path only). utils/parse.js had eval() on text derived from the input (lines 7 and 9, exported as evalLuaNum, never called by the CLI = dead code, but exploitable if wired in: verified a harmless file write via crafted '(function() return require(...) end)()'). PATCHED: replaced by sEv() which only evals strings made of digits/arithmetic/comparison/boolean symbols. Bundled sample 123142 B -> 16768 B is byte-identical to the shipped expected deobfuscated.lua. Non-Ironveil input throws a bare Error (exit 1, noisy stack, fast).",
+  "requires": [
+    "node",
+    "python3"
+  ]
+}

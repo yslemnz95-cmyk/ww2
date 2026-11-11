@@ -1,0 +1,1 @@
+{"GetControlPoint|0": "ERROR:Path2D:GetControlPoint() at index 0 access out of bounds", "GetControlPoint|1": "ERROR:Path2D:GetControlPoint() at index 1 access out of bounds", "GetControlPoint|table": "ERROR:Unable to cast Array to int", "RemoveControlPoint|1": "ERROR:Path2D:RemoveControlPoint() at index 1 access out of bounds"}

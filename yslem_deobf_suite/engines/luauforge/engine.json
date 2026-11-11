@@ -1,0 +1,32 @@
+{
+  "name": "luauforge",
+  "label": "LuauForge (couches statiques, puis machine virtuelle executee dans le bac a sable)",
+  "detect": [
+    {
+      "regex": "\\A\\s*--\\s*luauforge\\s*\\|",
+      "confidence": 0.97
+    },
+    {
+      "regex": "(?s)\\Alocal __k=#\\(['\"][A-Za-z]{3,24}['\"]\\)\\s*local __w1=\\[",
+      "confidence": 0.9
+    },
+    {
+      "regex": "(?s)\\Alocal __d=\\{[^\\n]{0,40000}\\}\\s*local __s=\\[=*\\[",
+      "confidence": 0.85
+    }
+  ],
+  "cmd": [
+    "python3",
+    "run.py",
+    "{in}",
+    "{out}"
+  ],
+  "timeout": 900,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "node",
+    "luau (bin/luau patche : fourni par bootstrap.py)"
+  ],
+  "notes": "Defait les couches statiques (espaces/tabulations, dictionnaire de mots), chacune verifiee par luau-ast. S'il reste une machine virtuelle, elle est EXECUTEE dans le bac a sable du moteur sandbox (sans reseau) et le programme reel qu'elle revele est livre ; le routeur suit ensuite le chargeur eventuel (loader_chain). Sans Node/Luau : seules les couches statiques."
+}

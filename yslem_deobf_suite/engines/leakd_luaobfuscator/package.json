@@ -1,0 +1,22 @@
+{
+  "name": "leakd",
+  "version": "1.0.0",
+  "description": "deobfuscator",
+  "main": "deobf.js",
+  "bin": {
+    "leakd": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "files": [
+    "deobf.js",
+    "index.js",
+    "Utils",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "ironbrew2",
+  "label": "IronBrew 2 et forks (bytecode Lua 5.1 reconstitué + décompilation LuaDec)",
+  "detect": [
+    {
+      "regex": "(?s)\\A.{0,300}Obfuscated with IronBrew2",
+      "confidence": 0.95
+    },
+    {
+      "regex": "(?s)\\A.{0,40}--\\[\\[\\s*SFG ENCRYPTED",
+      "confidence": 0.9
+    },
+    {
+      "regex": "(?s)\\A.{0,40}--\\[\\[\\s*NCDev Team Evolution",
+      "confidence": 0.9
+    },
+    {
+      "regex": "(?s)\\A.{0,40}--\\[\\[\\s*AztupBrew",
+      "confidence": 0.9
+    },
+    {
+      "regex": "(?s)\\A.{0,40}--\\[\\[\\s*moonstrike\\.cc",
+      "confidence": 0.9
+    },
+    {
+      "regex": "(?s)\\A\\s*local \\w+=string\\.byte;local \\w+=string\\.char;local \\w+=string\\.sub;local \\w+=table\\.concat;local \\w+=table\\.insert;",
+      "confidence": 0.7
+    }
+  ],
+  "cmd": [
+    "python3",
+    "run.py",
+    "{in}",
+    "{out}"
+  ],
+  "timeout": 300,
+  "safe_for_untrusted": true,
+  "requires": [
+    "python3",
+    "lupa",
+    "luaparser"
+  ],
+  "notes": "IronBrew 2 et forks (KrystekYT, SFG, NCDev, AztupBrew, moonstrike, V2 sans en-tête). La VM est un interpréteur Lua 5.1 écrit en Lua : son dispatch est lu dans le script (AST), le désérialiseur est capturé sans exécuter le reste, chaque handler est classé par la forme de ses micro-opérations, et le bytecode Lua 5.1 obtenu (vérifié) est décompilé par LuaDec. Vérifié par comparaison de traces slot à slot (VM originale vs bytecode) sur 7 forks et 29 fichiers. Résultat toujours PARTIEL (structure et noms à vérifier). IronBrew 3 (--ironbrew3) : autre VM, non prise en charge."
+}
