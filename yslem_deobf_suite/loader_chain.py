@@ -105,14 +105,40 @@ class _Guard(urllib.request.HTTPRedirectHandler):
 
 
 def normalize_url(url: str) -> str:
-    """Liens « page » courants -> liens bruts (sinon on telechargerait du HTML)."""
+    """Liens « page » courants -> liens bruts.
+
+    Synchronise avec tools_cog._normalize_url : toute plateforme ajoutee la-bas
+    doit l'etre ici aussi, car le loader chain simule game:HttpGet() et les scripts
+    Roblox pointent souvent vers ces sites.
+    """
     url = url.strip().strip("<>")
     m = re.match(r"https?://(?:www\.)?github\.com/([^/]+)/([^/]+)/blob/(.+)$", url, re.I)
     if m:
         return f"https://raw.githubusercontent.com/{m.group(1)}/{m.group(2)}/{m.group(3).split('?')[0]}"
-    m = re.match(r"https?://(?:www\.)?pastebin\.com/(?!raw/)(\w+)/?$", url, re.I)
+    m = re.match(r"https?://(?:www\.)?pastebin\.com/(?!raw/)([A-Za-z0-9]+)/?$", url, re.I)
     if m:
         return f"https://pastebin.com/raw/{m.group(1)}"
+    m = re.match(r"https?://gist\.github\.com/([^/]+)/([0-9a-f]+)/?$", url, re.I)
+    if m:
+        return f"https://gist.githubusercontent.com/{m.group(1)}/{m.group(2)}/raw"
+    m = re.match(r"https?://(?:www\.)?hastebin\.com/(?!raw/)([A-Za-z0-9]+)(?:\.\w{1,8})?/?$", url, re.I)
+    if m:
+        return f"https://hastebin.com/raw/{m.group(1)}"
+    m = re.match(r"https?://(?:www\.)?paste\.ee/p/([A-Za-z0-9]+)/?$", url, re.I)
+    if m:
+        return f"https://paste.ee/r/{m.group(1)}"
+    m = re.match(r"https?://(?:www\.)?pastecode\.io/s/([A-Za-z0-9]+)/?$", url, re.I)
+    if m:
+        return f"https://pastecode.io/raw/{m.group(1)}"
+    m = re.match(r"https?://(?:www\.)?rentry\.co/([A-Za-z0-9_-]+)/?$", url, re.I)
+    if m:
+        return f"https://rentry.co/{m.group(1)}/raw"
+    m = re.match(r"https?://(?:www\.)?sourceb\.in/([A-Za-z0-9]+)/?$", url, re.I)
+    if m:
+        return f"https://sourceb.in/{m.group(1)}/raw"
+    m = re.match(r"https?://(?:www\.)?pastes\.dev/([A-Za-z0-9]+)/?$", url, re.I)
+    if m:
+        return f"https://api.pastes.dev/{m.group(1)}"
     return url
 
 
